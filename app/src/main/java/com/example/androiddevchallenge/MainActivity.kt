@@ -16,13 +16,23 @@
 package com.example.androiddevchallenge
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.samples.crane.home.LandingScreen
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.androiddevchallenge.base.BaseTheme
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
 class MainActivity : AppCompatActivity() {
@@ -30,17 +40,48 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                MainScreen(onBackPressedDispatcher)
             }
         }
     }
 }
 
 // Start building your app here!
+
+enum class SplashState { Shown, Completed }
+
 @Composable
-fun MyApp() {
-    Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
+fun MainScreen(b: OnBackPressedDispatcher) {
+    BaseTheme {
+        val transitionState = remember { MutableTransitionState(SplashState.Shown) }
+        val transition = updateTransition(transitionState)
+        val splashAlpha by transition.animateFloat(
+            transitionSpec = {
+                tween(durationMillis = 100)
+            }
+        ) {
+            if (it == SplashState.Shown) 1f else 0f
+        }
+        val contentAlpha by transition.animateFloat(
+            transitionSpec = {
+                tween(durationMillis = 300)
+            }
+        ) {
+            if (it == SplashState.Shown) 0f else 1f
+        }
+
+        Box {
+            LandingScreen(
+                modifier = Modifier.alpha(splashAlpha),
+                onTimeout = {
+                    transitionState.targetState = SplashState.Completed
+                }
+            )
+
+            Surface(modifier = Modifier.alpha(contentAlpha)) {
+                PetApp(backDispatcher = b)
+            }
+        }
     }
 }
 
@@ -48,7 +89,7 @@ fun MyApp() {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        // MainScreen()
     }
 }
 
@@ -56,6 +97,6 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp()
+        // MainScreen()
     }
 }
