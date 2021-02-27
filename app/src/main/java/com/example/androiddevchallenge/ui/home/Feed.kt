@@ -32,7 +32,6 @@ fun Feed(
     modifier: Modifier = Modifier
 ) {
     val petsCollections = remember { PetRepo.getPets() }
-    remember { PetRepo.getFilters() }
     Feed(
         petsCollections,
         onPetClicked,
@@ -58,10 +57,6 @@ private fun PetCollectionList(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier) {
-        item {
-            // Spacer(Modifier.statusBarsHeight(additional = 56.dp))
-            // FilterBar(filters)
-        }
         itemsIndexed(petCollections) { index, petCollection ->
             if (index > 0) {
                 PetDivider(thickness = 2.dp)

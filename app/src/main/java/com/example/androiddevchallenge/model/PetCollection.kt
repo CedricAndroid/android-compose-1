@@ -33,7 +33,6 @@ enum class CollectionType { Normal, Highlight }
 object PetRepo {
     fun getPets(): List<PetCollection> = petsCollections
     fun getPet(petId: Long) = petsList.find { it.id == petId }!!
-    fun getFilters() = filters
 }
 
 /**
