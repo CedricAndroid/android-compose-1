@@ -1,5 +1,4 @@
-# Put title of your app here
-Pets
+# Pets
 
 ![Workflow result](https://github.com/CedricAndroid/android-compose-1/workflows/Check/badge.svg)
 
@@ -11,7 +10,7 @@ This app was build as request of the compose challenge, (week 1) 2021-jan-26
 
 
 ## :bulb: Motivation and Context
-I am proud of the fact that this is my first app in compose UI, and i like it a lot!
+I am proud of the fact that this is my first app using compose UI, and i like it a lot!
 I also love pets, so this first exercise was a good one. Looking forward to the next one.
 Even a splashscreen and motion is already into the app, which was not requested.
 
